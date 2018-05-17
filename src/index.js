@@ -2,22 +2,14 @@ const {
   BaseKonnector,
   requestFactory,
   signin,
-  scrape,
   saveBills,
   log
 } = require('cozy-konnector-libs')
 const cheerio = require('cheerio');
 
 const request = requestFactory({
-  // the debug mode shows all the details about http request and responses. Very usefull for
-  // debugging but very verbose. That is why it is commented out by default
-  // debug: true,
-  // activates [cheerio](https://cheerio.js.org/) parsing on each page
   cheerio: true,
-  // If cheerio is activated do not forget to deactivate json parsing (which is activated by
-  // default in cozy-konnector-libs
   json: false,
-  // this allows request-promise to keep cookies between requests
   jar: true
 })
 
@@ -42,11 +34,13 @@ async function start(fields) {
   const contractNumber = $contractLinks.first().text().replace(/\D/g, '')
   const contractPageUrl = $contractPage('form[name="theForm"]').attr('action')
 
+  let requestId = 0;
+
   await request(`${baseUrl}/connect/${contractPageUrl}`, {
     method: 'post',
     form: {
       act: 'consulterContrat',
-      _rqId_: 0,
+      _rqId_: requestId++,
       _mnLck_: true,
       selIdcontrats: contractNumber
     }
@@ -58,7 +52,7 @@ async function start(fields) {
     method: 'post',
     form: {
       act: 'afficherOnglet',
-      _rqId_: '1',
+      _rqId_: requestId++,
       _ongIdx: '302001',
       _mnLck_: 'false',
       etat: 'actif'
@@ -66,7 +60,6 @@ async function start(fields) {
   })
 
   const bills = [];
-  let requestId = 0;
 
   $billsPage('#tbl_mesFacturesExtrait tr').has(`a[onclick^="validerConnexion"]`).each((index, element) => {
     const $elem = cheerio.load(element);
@@ -93,7 +86,7 @@ async function start(fields) {
   for (let i = 0; i < bills.length; ++i) {
     const { billId, date, amount, reference } = bills[i];
 
-    await request(`${baseUrl}/connect/contrat.ZoomerContratOFactures.go?act=consulterFactureDuplicata&selIdmesFacturesExtrait=${billId}&_rqId_=${requestId}`)
+    await request(`${baseUrl}/connect/contrat.ZoomerContratOFactures.go?act=consulterFactureDuplicata&selIdmesFacturesExtrait=${billId}&_rqId_=${requestId++}`)
 
     await saveBills([{
       date,
@@ -106,20 +99,16 @@ async function start(fields) {
         method: 'post',
         form: {
           act: 'afficherDocument',
-          _rqId_: ++requestId,
+          _rqId_: requestId,
           _mnLck_: false
         }
       },
     }], fields.folderPath, {
       identifiers: ['electricite', 'es energies strasbourg', 'es', 'strasbourg', 'energies']
     })
-
-    console.log('yay ok', billId)
   }
 }
 
-// this shows authentication using the [signin function](https://github.com/konnectors/libs/blob/master/packages/cozy-konnector-libs/docs/api.md#module_signin)
-// even if this in another domain here, but it works as an example
 function authenticate(username, password) {
   return signin({
     url: `https://www.interactive.electricite-strasbourg.net/aelfr/accescybercompte/AuthCybercompteProcess`,
