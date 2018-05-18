@@ -5,7 +5,7 @@ const {
   saveBills,
   log
 } = require('cozy-konnector-libs')
-const cheerio = require('cheerio');
+const cheerio = require('cheerio')
 
 const request = requestFactory({
   cheerio: true,
@@ -17,25 +17,25 @@ const baseUrl = 'https://www.interactive.electricite-strasbourg.net'
 
 module.exports = new BaseKonnector(start)
 
-// The start function is run by the BaseKonnector instance only when it got all the account
-// information (fields). When you run this connector yourself in "standalone" mode or "dev" mode,
-// the account information come from ./konnector-dev-config.json file
 async function start(fields) {
   log('info', 'Authenticating ...')
   await authenticate(fields.login, fields.password)
   log('info', 'Successfully logged in')
-  // The BaseKonnector instance expects a Promise as return of the function
 
   log('info', 'finding contracts')
   const $contractPage = await request(`${baseUrl}/connect/habilitation`)
 
   log('info', 'scrapping contracts')
   const $contractLinks = $contractPage('a[id^=consulterContrat_]')
-  const contractNumber = $contractLinks.first().text().replace(/\D/g, '')
+  const $firstContract = $contractLinks.first();
+  // @ TODO: scrapp all contracts
+  const contractNumber = $firstContract.text().replace(/\D/g, '')
   const contractPageUrl = $contractPage('form[name="theForm"]').attr('action')
 
+  // with every request, we need to send an id that we increment (almost) every time
   let requestId = 0;
 
+  // naivation is mostly done through POST requests
   await request(`${baseUrl}/connect/${contractPageUrl}`, {
     method: 'post',
     form: {
@@ -104,7 +104,7 @@ async function start(fields) {
         }
       },
     }], fields.folderPath, {
-      identifiers: ['electricite', 'es energies strasbourg', 'es', 'strasbourg', 'energies']
+      identifiers: ['es energies strasbourg', 'es', 'strasbourg', 'energies']
     })
   }
 }
