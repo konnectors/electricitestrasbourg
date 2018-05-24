@@ -5,8 +5,8 @@ env:
   global:
   - GH_USER_EMAIL="travis@example.org"
   - GH_USER_NAME="cozy-bot"
-  - DEPLOY_REPOSITORY="git@github.com:konnectors/cozy-konnector-template.git"
-  - secure: CQ44ZVjPAIVRvGgMcduSAX4VmaOrzF3nrJXPFUsNQ2tMVVdaAlI1zTNkdfntqigZgz6Mpk9x+2FcA8qrkNzQ4cW0lPP9f5dBtSH1xetfpXDFKprW4bqzmhgXSXJFTOYxkChOBPmCYJr+Vv4XqDkv/dBEPdfRSgvVyd5YxHSd5HBU91rKyR+Hox7LTnhmlXleLIs11EQgp7RK+L28MBCtCqAa2niFlKKRlqupm2FSpZzxCh9qeY0wKCQzPE+QZUm4waJ1SUGKQwbzAfyOxu2O6rwzaTSknfdJoSX6AMxjRTWBC9c3VfUGM3wjVJIqMhiUj2FQhVIjiDyX/W60/q3UMC5WYzSvEDDfhnKCPwiUKSU7HvSxx9q2YP34evxKo7KPahz9zLlQZvW+GBMyI9hbMDBTALuQVVzhftsvqfrogyYhkEPviiYiVADWNxhacsbUjRA5svXnZvtmCPo7fLFwel/krgC5Z8AwAY0YxWjSHNVScUkieSDCrlxrC09vTtG60unt9gtXbD5ruUkDLWSUwHBv2p0WY1TdP+2Vlf3yYfBvEVbqi59AxG+T17bq7Xv3QZnkrwC+UOCNCeg+gHPv+fRpUaYWzCO4uaoY/nlJa7RulQFhGca3A//6xRo/KgWw9JJnOXJelNjE9oHCUu9xShotUZKOF+O93V/BRqs9ITo=
+  - DEPLOY_REPOSITORY="git@github.com:konnectors/electricitestrasbourg.git"
+  - secure: uUYGYOmx4REx16z5TyaZknc80Of1DHZmIz08RalGu7DM8mj1AqojTc05X4rFT/7p98HIyg+H2/2MSAE860ZOjIu8j6xeAgP2hqPEyIzai1OvOzgoJBNarLPVwFSgWut5nTUJ12YaFhUP/sm15aktcK9B0z/k1wXfYeSfwFu25qn7qpurP8TPAI3h6CKIk8zif0pILCZ+/lMWIWcNSU61dyrvxcuGOyspPYXfkbfOJW3INR2fI3QMc0ShYtq12b3QiZ8+2mSEZq8CbU8Hlxd6kXiJZ+2vNqcAv4J6ooF1RvH4HP7TXi/M8p9DSTjlRbA3s4O2YT+FMy3tOzy6Qx/EE3vkX+tQMkGpL/7mbLu4vBgjf+5p3TXtzZLwX1Aan2XGvItGMIt0Bq1HlLL1sw9V7qfwMh4ArLfu3lYr93a9ZhuueO58t198v+IMSKRNKyA2mObzP0HgTEjwNmWbzA6C0IQm7R8zPIZDIvDhiCSzQblHxWKGS69oD+XIeYteACZWF2IAL0RQ8z0d8Rz6krVA6OqFPiAx2Kmcqmk8qqWmSGDnXZIExo90Y3ex5YxsBFNOCjZ/Amr+94Z1pedEF/jgVpjz0NPPLedXo+qsg9eGI6lE7wTIslBk77ZGezMJFU9TlCyRObsR8AVkrGjF4rwqOGbDXVwiDBHwQHQXLIq9hfc=
 cache:
   yarn: true
   directories:
@@ -31,9 +31,8 @@ deploy:
   on:
     tags: true
 before_install:
-# run the yarn travisDeployKey command to genrate this
-# - openssl aes-256-cbc -K $encrypted_0b21ecdcf920_key -iv $encrypted_0b21ecdcf920_iv
-#   -in github_deploy_key.enc -out /tmp/github_deploy_key -d
+- openssl aes-256-cbc -K $encrypted_035836d9af95_key -iv $encrypted_035836d9af95_iv
+  -in github_deploy_key.enc -out /tmp/github_deploy_key -d
 - eval "$(ssh-agent -s)"
 - chmod 600 /tmp/github_deploy_key
 - ssh-add /tmp/github_deploy_key

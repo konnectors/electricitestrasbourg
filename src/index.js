@@ -7,6 +7,10 @@ const {
 } = require('cozy-konnector-libs')
 const cheerio = require('cheerio')
 
+process.env.SENTRY_DSN =
+  process.env.SENTRY_DSN ||
+  'https://50d776aeeb4c48798c5961c848ddadbb:648cdef86f8547b39df73a5d24cc877c@sentry.cozycloud.cc/56'
+
 const request = requestFactory({
   cheerio: true,
   json: false,
@@ -27,13 +31,13 @@ async function start(fields) {
 
   log('info', 'scrapping contracts')
   const $contractLinks = $contractPage('a[id^=consulterContrat_]')
-  const $firstContract = $contractLinks.first();
+  const $firstContract = $contractLinks.first()
   // @ TODO: scrapp all contracts
   const contractNumber = $firstContract.text().replace(/\D/g, '')
   const contractPageUrl = $contractPage('form[name="theForm"]').attr('action')
 
   // with every request, we need to send an id that we increment (almost) every time
-  let requestId = 0;
+  let requestId = 0
 
   // naivation is mostly done through POST requests
   await request(`${baseUrl}/connect/${contractPageUrl}`, {
@@ -44,68 +48,96 @@ async function start(fields) {
       _mnLck_: true,
       selIdcontrats: contractNumber
     }
-  });
+  })
 
   log('info', `scrapping contract ${contractNumber}`)
 
-  const $billsPage = await request(`${baseUrl}/connect/contrat.ZoomerContratOGeneralites.go`, {
-    method: 'post',
-    form: {
-      act: 'afficherOnglet',
-      _rqId_: requestId++,
-      _ongIdx: '302001',
-      _mnLck_: 'false',
-      etat: 'actif'
+  const $billsPage = await request(
+    `${baseUrl}/connect/contrat.ZoomerContratOGeneralites.go`,
+    {
+      method: 'post',
+      form: {
+        act: 'afficherOnglet',
+        _rqId_: requestId++,
+        _ongIdx: '302001',
+        _mnLck_: 'false',
+        etat: 'actif'
+      }
     }
-  })
+  )
 
-  const bills = [];
+  const bills = []
 
-  $billsPage('#tbl_mesFacturesExtrait tr').has(`a[onclick^="validerConnexion"]`).each((index, element) => {
-    const $elem = cheerio.load(element);
-    const onclick = $elem(`a[onclick^="validerConnexion"]`).last().attr('onclick');
-    const billId = /(\d+)\'\)$/g.exec(onclick)[1];
-    requestId = parseInt(/_rqId_=(\d)+/g.exec(onclick)[1]);
+  $billsPage('#tbl_mesFacturesExtrait tr')
+    .has(`a[onclick^="validerConnexion"]`)
+    .each((index, element) => {
+      const $elem = cheerio.load(element)
+      const onclick = $elem(`a[onclick^="validerConnexion"]`)
+        .last()
+        .attr('onclick')
+      // TODO: eslint says a "\" is useess.
+      // eslint-disable-next-line no-useless-escape
+      const billId = /(\d+)\'\)$/g.exec(onclick)[1]
+      requestId = parseInt(/_rqId_=(\d)+/g.exec(onclick)[1])
 
-    const reference = $elem('td').eq(0).text();
-    const date = new Date($elem('td').eq(1).text().split('/').reverse().join('/'));
-    const amount = $elem('td').eq(3).text();
+      const reference = $elem('td')
+        .eq(0)
+        .text()
+      const date = new Date(
+        $elem('td')
+          .eq(1)
+          .text()
+          .split('/')
+          .reverse()
+          .join('/')
+      )
+      const amount = $elem('td')
+        .eq(3)
+        .text()
 
-    bills.push({
-      billId,
-      reference,
-      date,
-      amount,
+      bills.push({
+        billId,
+        reference,
+        date,
+        amount
+      })
     })
-  })
 
   // here we use the saveBills function even if what we fetch are not bills, but this is the most
   // common case in connectors
   log('info', 'Saving data to Cozy')
 
   for (let i = 0; i < bills.length; ++i) {
-    const { billId, date, amount, reference } = bills[i];
+    const { billId, date, amount, reference } = bills[i]
 
-    await request(`${baseUrl}/connect/contrat.ZoomerContratOFactures.go?act=consulterFactureDuplicata&selIdmesFacturesExtrait=${billId}&_rqId_=${requestId++}`)
+    await request(
+      `${baseUrl}/connect/contrat.ZoomerContratOFactures.go?act=consulterFactureDuplicata&selIdmesFacturesExtrait=${billId}&_rqId_=${requestId++}`
+    )
 
-    await saveBills([{
-      date,
-      amount,
-      vendor: 'ES Strasbourg',
-      currency: '€',
-      filename: `${reference}.pdf`,
-      fileurl: `https://www.interactive.electricite-strasbourg.net/connect/contrat.ZoomerContratOFactures.go`,
-      requestOptions: {
-        method: 'post',
-        form: {
-          act: 'afficherDocument',
-          _rqId_: requestId,
-          _mnLck_: false
+    await saveBills(
+      [
+        {
+          date,
+          amount,
+          vendor: 'ES Strasbourg',
+          currency: '€',
+          filename: `${reference}.pdf`,
+          fileurl: `https://www.interactive.electricite-strasbourg.net/connect/contrat.ZoomerContratOFactures.go`,
+          requestOptions: {
+            method: 'post',
+            form: {
+              act: 'afficherDocument',
+              _rqId_: requestId,
+              _mnLck_: false
+            }
+          }
         }
-      },
-    }], fields.folderPath, {
-      identifiers: ['es energies strasbourg', 'es', 'strasbourg', 'energies']
-    })
+      ],
+      fields.folderPath,
+      {
+        identifiers: ['es energies strasbourg', 'es', 'strasbourg', 'energies']
+      }
+    )
   }
 }
 
