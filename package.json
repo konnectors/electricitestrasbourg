@@ -33,7 +33,7 @@
   },
   "dependencies": {
     "cheerio": "^1.0.0-rc.2",
-    "cozy-konnector-libs": "4.2.0"
+    "cozy-konnector-libs": "4.3.0"
   },
   "devDependencies": {
     "copy-webpack-plugin": "4.5.1",
