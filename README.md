@@ -1,4 +1,4 @@
-[Cozy][cozy] ES Energies
+test 2
 =======================================
 
 What's Cozy?
