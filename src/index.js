@@ -6,6 +6,7 @@ const {
   log
 } = require('cozy-konnector-libs')
 const cheerio = require('cheerio')
+const format = require('date-fns/format')
 
 process.env.SENTRY_DSN =
   process.env.SENTRY_DSN ||
@@ -91,9 +92,12 @@ async function start(fields) {
           .reverse()
           .join('/')
       )
-      const amount = $elem('td')
-        .eq(3)
-        .text()
+      const amount = parseFloat(
+        $elem('td')
+          .eq(3)
+          .text()
+          .replace(',', '.')
+      )
 
       bills.push({
         billId,
@@ -121,7 +125,7 @@ async function start(fields) {
           amount,
           vendor: 'ES Strasbourg',
           currency: '€',
-          filename: `${reference}.pdf`,
+          filename: `${format(date, 'YYYY-MM-DD')}_${reference}.pdf`,
           fileurl: `https://www.interactive.electricite-strasbourg.net/connect/contrat.ZoomerContratOFactures.go`,
           requestOptions: {
             method: 'post',
