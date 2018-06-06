@@ -1,6 +1,6 @@
 {
   "version": "1.0.1",
-  "name": "ES Strasbourg Électricité",
+  "name": "Électricité de Strasbourg",
   "type": "konnector",
   "language": "node",
   "icon": "icon.svg",
