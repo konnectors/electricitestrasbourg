@@ -139,7 +139,7 @@ async function start(fields) {
       ],
       fields.folderPath,
       {
-        identifiers: ['es energies strasbourg', 'es', 'strasbourg', 'energies']
+        identifiers: ['es energies strasbourg']
       }
     )
   }
