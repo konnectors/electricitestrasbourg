@@ -147,7 +147,7 @@ async function start(fields) {
 
 function authenticate(username, password) {
   return signin({
-    url: `https://www.interactive.electricite-strasbourg.net/aelfr/accescybercompte/AuthCybercompteProcess`,
+    url: `https://espaceclient.es.fr/alice-ael/`,
     formSelector: '#formAppli',
     formData: {
       _codeaction: 'accueil',
