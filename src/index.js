@@ -148,7 +148,7 @@ async function start(fields) {
 function authenticate(username, password) {
   return signin({
     url: `https://espaceclient.es.fr/alice-ael/`,
-    formSelector: '#formAppli',
+    formSelector: '#j_id_10',
     formData: {
       _codeaction: 'accueil',
       AuthProvider: 'AccesPro',
