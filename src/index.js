@@ -154,8 +154,8 @@ function authenticate(username, password) {
       AuthProvider: 'AccesPro',
       Forward: '/aelfr/accescybercompte/AuthCybercompteProcess',
       _backUrl: null,
-      Login: username,
-      Motdepasse: password
+      j_password: username,
+      j_username: password
     },
     // the validate function will check if
     validate: (statusCode, $) => {
