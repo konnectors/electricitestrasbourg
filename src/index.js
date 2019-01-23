@@ -161,12 +161,12 @@ function authenticate(username, password) {
     // the validate function will check if
     validate: (statusCode, $) => {
       // The login in toscrape.com always works excepted when no password is set
-      if ($(`meta[http-equiv="Refresh"]`).length === 1) {
+      if ($('#avatar').length != 0) {
         return true
       } else {
         // cozy-konnector-libs has its own logging function which format these logs with colors in
         // standalone and dev mode and as JSON in production mode
-        log('error', $('#formLogin font[color="red"]').text())
+        //log('error', $('#formLogin font[color="red"]').text())
         return false
       }
     }
