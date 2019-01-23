@@ -151,17 +151,20 @@ function authenticate(username, password) {
     url: loginUrl,
     formSelector: '#j_id_10',
     formData: {
-      _codeaction: 'accueil',
+/*       _codeaction: 'accueil',
       AuthProvider: 'AccesPro',
       Forward: '/aelfr/accescybercompte/AuthCybercompteProcess',
-      _backUrl: null,
+      _backUrl: null, */
       j_password: password,
-      j_username: username
+      j_username: username,
+      loginButton: '',
+      j_id_10_SUBMIT: 1,
+      'javax.faces.ViewState': '24c+nAhbmwpa9w2mO0QWTTEPxi7thbQ8QvY5/6iKp+6Isyek'
     },
     // the validate function will check if
-    validate: (statusCode, $) => {
+    validate: (statusCode, $, fullResponse) => {
       // The login in toscrape.com always works excepted when no password is set
-      if ($('#avatar').length != 0) {
+      if ($('#avatar').length != 0 || $('#j_id_10').length === 0) {
         return true
       } else {
         // cozy-konnector-libs has its own logging function which format these logs with colors in
