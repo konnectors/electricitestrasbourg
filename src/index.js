@@ -19,6 +19,7 @@ const request = requestFactory({
 })
 
 const baseUrl = 'https://www.interactive.electricite-strasbourg.net'
+const loginUrl = 'https://espaceclient.es.fr/alice-ael/login.faces'
 
 module.exports = new BaseKonnector(start)
 
@@ -147,7 +148,7 @@ async function start(fields) {
 
 function authenticate(username, password) {
   return signin({
-    url: `https://espaceclient.es.fr/alice-ael/`,
+    url: loginUrl,
     formSelector: '#j_id_10',
     formData: {
       _codeaction: 'accueil',
