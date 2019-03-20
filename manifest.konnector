@@ -5,7 +5,7 @@
   "language": "node",
   "icon": "icon.svg",
   "slug": "electricitestrasbourg",
-  "source": "git://github.com/konnectors/electricitestrasbourg.git",
+  "source": "git@github.com:konnectors/electricitestrasbourg.git",
   "editor": "Cozy",
   "vendor_link": "http://www.es.fr/",
   "categories": [
