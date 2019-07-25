@@ -1,11 +1,11 @@
 {
-  "version": "1.1.1",
+  "version": "1.2.0",
   "name": "Électricité de Strasbourg",
   "type": "konnector",
   "language": "node",
   "icon": "icon.svg",
   "slug": "electricitestrasbourg",
-  "source": "git://github.com/konnectors/electricitestrasbourg.git",
+  "source": "git@github.com:konnectors/electricitestrasbourg.git",
   "editor": "Cozy",
   "vendor_link": "http://www.es.fr/",
   "categories": [
