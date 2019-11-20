@@ -39,7 +39,7 @@
   },
   "dependencies": {
     "cheerio": "1.0.0-rc.3",
-    "cozy-konnector-libs": "4.31.0",
+    "cozy-konnector-libs": "4.32.0",
     "date-fns": "2.8.0"
   },
   "devDependencies": {
