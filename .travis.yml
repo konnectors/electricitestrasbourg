@@ -1,10 +1,8 @@
 language: node_js
 node_js:
-- '8'
+- '12'
 env:
   global:
-  - GH_USER_EMAIL="travis@example.org"
-  - GH_USER_NAME="cozy-bot"
   - DEPLOY_REPOSITORY="git@github.com:konnectors/electricitestrasbourg.git"
   - secure: uUYGYOmx4REx16z5TyaZknc80Of1DHZmIz08RalGu7DM8mj1AqojTc05X4rFT/7p98HIyg+H2/2MSAE860ZOjIu8j6xeAgP2hqPEyIzai1OvOzgoJBNarLPVwFSgWut5nTUJ12YaFhUP/sm15aktcK9B0z/k1wXfYeSfwFu25qn7qpurP8TPAI3h6CKIk8zif0pILCZ+/lMWIWcNSU61dyrvxcuGOyspPYXfkbfOJW3INR2fI3QMc0ShYtq12b3QiZ8+2mSEZq8CbU8Hlxd6kXiJZ+2vNqcAv4J6ooF1RvH4HP7TXi/M8p9DSTjlRbA3s4O2YT+FMy3tOzy6Qx/EE3vkX+tQMkGpL/7mbLu4vBgjf+5p3TXtzZLwX1Aan2XGvItGMIt0Bq1HlLL1sw9V7qfwMh4ArLfu3lYr93a9ZhuueO58t198v+IMSKRNKyA2mObzP0HgTEjwNmWbzA6C0IQm7R8zPIZDIvDhiCSzQblHxWKGS69oD+XIeYteACZWF2IAL0RQ8z0d8Rz6krVA6OqFPiAx2Kmcqmk8qqWmSGDnXZIExo90Y3ex5YxsBFNOCjZ/Amr+94Z1pedEF/jgVpjz0NPPLedXo+qsg9eGI6lE7wTIslBk77ZGezMJFU9TlCyRObsR8AVkrGjF4rwqOGbDXVwiDBHwQHQXLIq9hfc=
 cache:
