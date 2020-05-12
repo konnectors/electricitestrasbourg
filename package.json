@@ -39,7 +39,7 @@
   "dependencies": {
     "cheerio": "1.0.0-rc.3",
     "cozy-konnector-libs": "4.34.2",
-    "date-fns": "2.11.1"
+    "date-fns": "2.13.0"
   },
   "devDependencies": {
     "copy-webpack-plugin": "5.1.1",
