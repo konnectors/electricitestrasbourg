@@ -38,11 +38,11 @@
   },
   "dependencies": {
     "cheerio": "1.0.0-rc.5",
-    "cozy-konnector-libs": "4.40.1",
-    "date-fns": "2.16.1"
+    "cozy-konnector-libs": "4.42.0",
+    "date-fns": "2.21.2"
   },
   "devDependencies": {
-    "cozy-jobs-cli": "1.15.10",
-    "cozy-konnector-build": "1.1.8"
+    "cozy-jobs-cli": "1.16.0",
+    "cozy-konnector-build": "1.2.0"
   }
 }
