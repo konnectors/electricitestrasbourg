@@ -19,6 +19,7 @@ const request = requestFactory({
 })
 
 const baseUrl = 'https://www.interactive.electricite-strasbourg.net'
+const loginUrl = 'https://espaceclient.es.fr/alice-ael/login.faces'
 
 module.exports = new BaseKonnector(start)
 
@@ -147,25 +148,28 @@ async function start(fields) {
 
 function authenticate(username, password) {
   return signin({
-    url: `https://www.interactive.electricite-strasbourg.net/aelfr/accescybercompte/AuthCybercompteProcess`,
-    formSelector: '#formAppli',
+    url: loginUrl,
+    formSelector: '#j_id_10',
     formData: {
-      _codeaction: 'accueil',
+/*       _codeaction: 'accueil',
       AuthProvider: 'AccesPro',
       Forward: '/aelfr/accescybercompte/AuthCybercompteProcess',
-      _backUrl: null,
-      Login: username,
-      Motdepasse: password
+      _backUrl: null, */
+      j_password: password,
+      j_username: username,
+      loginButton: '',
+      j_id_10_SUBMIT: 1,
+      'javax.faces.ViewState': '24c+nAhbmwpa9w2mO0QWTTEPxi7thbQ8QvY5/6iKp+6Isyek'
     },
     // the validate function will check if
-    validate: (statusCode, $) => {
+    validate: (statusCode, $, fullResponse) => {
       // The login in toscrape.com always works excepted when no password is set
-      if ($(`meta[http-equiv="Refresh"]`).length === 1) {
+      if ($('#avatar').length != 0 || $('#j_id_10').length === 0) {
         return true
       } else {
         // cozy-konnector-libs has its own logging function which format these logs with colors in
         // standalone and dev mode and as JSON in production mode
-        log('error', $('#formLogin font[color="red"]').text())
+        //log('error', $('#formLogin font[color="red"]').text())
         return false
       }
     }

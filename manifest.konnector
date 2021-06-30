@@ -13,7 +13,7 @@
   ],
   "fields": {
     "login": {
-      "type": "text"
+      "type": "email"
     },
     "password": {
       "type": "password"
