@@ -8,10 +8,6 @@ const {
 const cheerio = require('cheerio')
 const format = require('date-fns/format')
 
-process.env.SENTRY_DSN =
-  process.env.SENTRY_DSN ||
-  'https://50d776aeeb4c48798c5961c848ddadbb:648cdef86f8547b39df73a5d24cc877c@sentry.cozycloud.cc/56'
-
 const request = requestFactory({
   cheerio: true,
   json: false,
